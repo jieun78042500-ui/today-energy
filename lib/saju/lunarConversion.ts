@@ -1,0 +1,3 @@
+import KoreanLunarCalendar from 'korean-lunar-calendar';
+export function lunarToSolar(date:string,leap=false){const [y,m,d]=date.split('-').map(Number);const c=new KoreanLunarCalendar();if(!c.setLunarDate(y,m,d,leap))throw new Error('존재하지 않거나 변환 범위를 벗어난 음력 날짜입니다. 윤달 여부를 확인해주세요.');const l=c.getLunarCalendar();if(!!l.intercalation!==leap)throw new Error('해당 연월은 윤달이 아닙니다.');const s=c.getSolarCalendar();return `${s.year}-${String(s.month).padStart(2,'0')}-${String(s.day).padStart(2,'0')}`;}
+export function solarToLunar(date:string){const c=new KoreanLunarCalendar();if(!c.setSolarDate(...date.split('-').map(Number) as [number,number,number]))throw new Error('음력 변환 범위를 벗어났습니다.');return c.getLunarCalendar();}

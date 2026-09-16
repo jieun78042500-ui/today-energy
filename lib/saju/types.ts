@@ -1,0 +1,11 @@
+export type Element='목'|'화'|'토'|'금'|'수';
+export type SymbolData={hanja:string;korean:string;element:Element;yinYang:'음'|'양'};
+export type Pillar={stem:SymbolData;branch:SymbolData};
+export type BirthInput={birthDate:string;birthTime?:string|null;calendarType:'solar'|'lunar';timeUnknown?:boolean;timezone?:string;leapMonth?:boolean;dayBoundary?:'midnight'|'zi23'};
+export type NormalizedBirth={solarDate:string;solarTime:string|null;originalCalendarType:'solar'|'lunar';timezone:string;dayBoundary:'midnight'|'zi23';original:BirthInput};
+export const ELEMENTS:Element[]=['목','화','토','금','수'];
+export const STEMS:SymbolData[]=Array.from('甲乙丙丁戊己庚辛壬癸').map((hanja,i)=>({hanja,korean:Array.from('갑을병정무기경신임계')[i],element:ELEMENTS[Math.floor(i/2)],yinYang:i%2?'음':'양'}));
+export const BRANCHES:SymbolData[]=Array.from('子丑寅卯辰巳午未申酉戌亥').map((hanja,i)=>({hanja,korean:Array.from('자축인묘진사오미신유술해')[i],element:('수토목목토화화토금금토수'.split('') as Element[])[i],yinYang:i%2?'음':'양'}));
+export const pillar=(s:string):Pillar=>({stem:STEMS.find(x=>x.hanja===s[0])!,branch:BRANCHES.find(x=>x.hanja===s[1])!});
+export type Pillars=Record<'year'|'month'|'day'|'hour',Pillar|null>;
+export const ENGINE_VERSION='saju-1.0.0';
